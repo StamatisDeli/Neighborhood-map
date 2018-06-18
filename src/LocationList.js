@@ -1,28 +1,26 @@
 import React from 'react'
 import App from './App'
 import escapeRegExp from 'escape-string-regexp'
-
+let showingLocations
 class LocationList extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
+        //query:[],
+        //workingList:[],
       }
-      query:''
     }
-
-updateQuery=(query)=>{
-    this.setState({query: query}) //or query.trim()
-}
 
     render() {
         //console.log(this.props.locations.map(location=>location.name))
-        let showingMarkers
-        if(this.state.query){
-            const match = new RegExp(escapeRegExp(this.state.query), 'i')
-            showingMarkers = this.props.locations.filter(location=>match.test(location.name))
-        }else
-        {showingMarkers=this.props.locations}
-
+        /*
+        let showingLocations
+        if (this.props.query){
+            const match = new RegExp(escapeRegExp(this.props.query), 'i')
+            showingLocations = this.props.locations.filter(location=>match.test(location.name))
+        } else
+        {showingLocations=this.props.locations}
+*/
         return (
             <div>
             <input 
@@ -30,11 +28,23 @@ updateQuery=(query)=>{
             type='text' 
             placeholder='Enter a beach' 
             value={this.state.query}
-            onChange={e=>this.updateQuery(e.target.value)}
+            onChange={e=>this.props.updateQuery(e.target.value)}
             />
             <ul>
-            {showingMarkers.map( location=>
-            <li data-key={location.id} key={location.id} href="#" role="button" onClick={e=>this.props.handleClick(e)}> {location.name} </li>
+            {this.props.workingList.map( location =>
+            <li data-key={location.id} key={location.id} role="button" 
+            onClick={e=>this.props.handleClick(e)}> 
+            {location.name.includes('Paralia')?
+            location.name=location.name.replace(/paralia/i, ''):
+            location.name.includes('Παραλία')?
+            location.name=location.name.replace(/παραλία/i, ''):
+            location.name.includes('παραλια')?
+            location.name=location.name.replace(/παραλια/i, ''):
+            location.name.includes('Βeach')?
+            location.name=location.name.replace(/beach/i, ''):
+            location.name
+            } 
+            </li>
             )}
             </ul>
             </div>
