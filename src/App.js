@@ -8,10 +8,11 @@ let infowindows=[]
 let syros = new window.google.maps.LatLng(37.438503, 24.913934)
 const request = {
   location: syros,
-  radius: '9000',
+  radius: '9500',
   query: ["Παραλία", "Paralia", "παραλίες", "Beach"]
 };
 let map=""
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -36,21 +37,16 @@ class App extends React.Component {
   }
   //initializing Google Maps showing Syros island
   drawMap() {
-    //let syros = new window.google.maps.LatLng(37.438503, 24.913934)
-    let markers=[]
-    let infowindows=[]
-    
     let map = new window.google.maps.Map(document.getElementById('map'), {
       center: syros,
       zoom: 12,
-      mapTypeId: 'terrain',
+      mapTypeId: 'roadmap',
     })
 
     this.setState({map: map})
 
     let service = new window.google.maps.places.PlacesService(map);
     service.textSearch(request, this.callback);
-
   }
 
   callback(results, status) {
@@ -62,13 +58,10 @@ class App extends React.Component {
       }
       this.setState({ locations: results, workingList:results })
     }
-    //this.setState({workingList:this.state.locations})
-    function createMarker(place) {
-      //let placeLoc = place.geometry.location;
-      let photos = place.photos;
-      //if (!photos) return ""; //handling absence of photo
-      // if (place.name.includes('Bar')) return; //excluding bars!
 
+    function createMarker(place) {
+      let photos = place.photos;
+      
       let marker = new window.google.maps.Marker({
         map: self.state.map,
         position: place.geometry.location,
@@ -77,11 +70,12 @@ class App extends React.Component {
       });
 
       markers.push(marker)
-
+      
       let content =
       `<div>
       <strong>${place.name}</strong><br>
       <img src ='${photos?photos[0].getUrl({ 'maxWidth': 150, 'maxHeight': 150 }):null}'><br>
+      <p>Click for more pictures</p>
       ${place.geometry.location}
       </div>`
 
@@ -99,13 +93,20 @@ class App extends React.Component {
         infowindow.setContent(content)
         infowindow.open(self.state.map, this)
       })
+
+      window.google.maps.event.addListener(marker, 'click', function () {
+        console.log(marker.id)
+      })
     }
   }
 
   handleClick(e) {
     //mapping through markers for match, then through infowindows for match
+    console.log(this.state.markers.map(marker=>{marker.id}))//this logs undefined
+
     this.state.markers.map(marker=>{
       if(marker.id===e.target.dataset.key){
+        //console.log(marker.id)//this logs ok
         this.state.infowindows.map(infowindow=>{
           if(marker.id===infowindow.id){
             infowindow.open(this.state.map, marker);
@@ -117,29 +118,19 @@ class App extends React.Component {
   updateQuery=(query)=>{
     let workingList = this.state.workingList
     let locations = this.state.locations
-    this.setState({query})
-    //this.setState({workingList:this.props.locations})
-     //or query.trim()
-    //this.state.markers.map(marker=>marker.setVisible(false))
+    let markers = this.state.markers
+    this.setState({query})//or query.trim()
 
-    //let showingLocations
     if (query){
-        const match = new RegExp(escapeRegExp(query), 'i')
-        workingList = locations.filter(location=>match.test(location.name))
-        /*
-        showingLocations.map(location=>{ 
-          this.props.markers.map(marker=>{
-            if(location.id===marker.id){
-              marker.setVisible(true)
-            }else{marker.setVisible(false)}
-          })
-          
-        })
-        */
-        //this.state.markers.map(marker=>marker.setVisible(match))
-        
-    } else
-    {workingList = locations}
+      const match = new RegExp(escapeRegExp(query), 'i')
+      workingList = locations.filter(location=>match.test(location.name))
+/*
+      let notVisible = workingList.filter(place=>{
+        markers.map(marker=>{marker.id===place.id})
+      })
+      console.log(notVisible)
+      */
+    } else {workingList = locations}
     this.setState({workingList})
   }
 
@@ -157,6 +148,7 @@ class App extends React.Component {
             showingLocations={this.showingLocations}
             markers={this.state.markers}
             workingList={this.state.workingList}
+            infowindow={this.state.infowindows}
           />
         </section>
         <section className="map" id="map">

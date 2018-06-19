@@ -6,21 +6,11 @@ class LocationList extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        //query:[],
-        //workingList:[],
       }
     }
 
     render() {
-        //console.log(this.props.locations.map(location=>location.name))
-        /*
-        let showingLocations
-        if (this.props.query){
-            const match = new RegExp(escapeRegExp(this.props.query), 'i')
-            showingLocations = this.props.locations.filter(location=>match.test(location.name))
-        } else
-        {showingLocations=this.props.locations}
-*/
+
         return (
             <div>
             <input 

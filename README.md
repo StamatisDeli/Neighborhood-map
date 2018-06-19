@@ -44,3 +44,11 @@ escape-string-regexp
 
 https://codeburst.io/multiple-ways-of-implementing-flickr-public-api-in-jquery-and-javascript-dbaf0f35bbef
 https://www.outsystems.com/forums/discussion/18669/open-marker-info-box-when-clicking-on-external-link/
+
+
+Temp notes
+
+showInfo = () => {
+   // force marker click
+   window.google.maps.event.trigger(this.props.place.marker,'click');
+}
