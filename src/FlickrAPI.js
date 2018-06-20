@@ -1,4 +1,4 @@
-function JavaScriptFetch() {
+export function JavaScriptFetch() {
     var script = document.createElement('script');
     var searchName = "azolimnos";
 
@@ -8,7 +8,7 @@ function JavaScriptFetch() {
 
 }
 
-function jsonFlickrFeed(data) {
+export function jsonFlickrFeed(data) {
     var image = "";
 
     data.items.forEach(function (element) {
@@ -16,5 +16,5 @@ function jsonFlickrFeed(data) {
         console.log(data);
     });
 
-    document.getElementById("#flickr").innerHTML = image;
+    document.getElementById("#images").innerHTML = image;
 }

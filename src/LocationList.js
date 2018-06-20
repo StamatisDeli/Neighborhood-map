@@ -1,7 +1,5 @@
 import React from 'react'
-import App from './App'
-import escapeRegExp from 'escape-string-regexp'
-let showingLocations
+
 class LocationList extends React.Component {
     constructor(props) {
       super(props);

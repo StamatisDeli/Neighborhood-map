@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import LocationList from './LocationList'
+import Modal from './Modal'
 import escapeRegExp from 'escape-string-regexp'
+
 
 let markers=[]
 let infowindows=[]
@@ -30,6 +32,8 @@ class App extends React.Component {
     this.callback = this.callback.bind(this)
     //this.showInfo = this.showInfo.bind(this)
     this.updateQuery=this.updateQuery.bind(this)
+    this.openModal=this.openModal.bind(this)
+    this.closeModal=this.closeModal.bind(this)
   }
  
   componentDidMount() {
@@ -72,15 +76,18 @@ class App extends React.Component {
       markers.push(marker)
       
       let content =
-      `<div>
+      `
+      <a>
+      <div id="info">
       <strong>${place.name}</strong><br>
-      <img src ='${photos?photos[0].getUrl({ 'maxWidth': 150, 'maxHeight': 150 }):null}'><br>
+      <img src ='${photos?photos[0].getUrl({ 'maxWidth': 140, 'maxHeight': 140 }):null}'><br>
       <p>Click for more pictures</p>
-      ${place.geometry.location}
-      </div>`
-
+      </div>
+      </a>
+      `
+      
       let infowindow = new window.google.maps.InfoWindow({
-        maxWidth:250,
+        maxWidth:140,
         id:place.id,
         content:content
       })
@@ -88,22 +95,26 @@ class App extends React.Component {
       infowindows.push(infowindow)
 
       self.setState({infowindows:infowindows, markers:markers})
-      
+      let info
       window.google.maps.event.addListener(marker, 'click', function () {
         infowindow.setContent(content)
         infowindow.open(self.state.map, this)
+        let info = document.getElementById("info")
+        
+        window.google.maps.event.addDomListener(info, 'click', function () {
+          //let info = document.getElementById("info")
+          console.log(info)
+          self.openModal()
+        })
+        
       })
 
-      window.google.maps.event.addListener(marker, 'click', function () {
-        console.log(marker.id)
-      })
+
+
     }
   }
 
   handleClick(e) {
-    //mapping through markers for match, then through infowindows for match
-    console.log(this.state.markers.map(marker=>{marker.id}))//this logs undefined
-
     this.state.markers.map(marker=>{
       if(marker.id===e.target.dataset.key){
         //console.log(marker.id)//this logs ok
@@ -124,18 +135,40 @@ class App extends React.Component {
     if (query){
       const match = new RegExp(escapeRegExp(query), 'i')
       workingList = locations.filter(location=>match.test(location.name))
+      console.log(workingList)
 /*
-      let notVisible = workingList.filter(place=>{
-        markers.map(marker=>{marker.id===place.id})
+      markers.filter(marker=>
+        {workingList.forEach(place=>{
+          if (place.id!==marker.id) marker.setVisible(false)
+          //else marker.setVisible(true)
+        })
+        return marker
       })
+*/
+      let notVisible = markers.filter(marker=>{workingList.map(place=>{if(place.id!==marker.id)return true})})
+      
+    //let notVisible = markers.filter(marker=>{return workingList.map(place=>{if(place.id!==marker.id) return true})});
+      
       console.log(notVisible)
-      */
+
     } else {workingList = locations}
     this.setState({workingList})
+
+    //markers.forEach(marker=>marker.setVisible(true))
+    console.log(workingList)
   }
 
+openModal(){
+  this.setState({isVisible:true})
+}
+
+closeModal(){
+  this.setState({isVisible:false})
+}
 
   render() {
+    //console.log(this.state.markers.map(marker => marker.id))
+    //console.log(this.state.locations.map(place => place.id))
     return (
       <div className="App" role="main">
         <section className="left-column" id="flickr">
@@ -153,6 +186,10 @@ class App extends React.Component {
         </section>
         <section className="map" id="map">
         </section>
+        <Modal 
+        isVisible={this.state.isVisible}
+        closeModal={this.closeModal}
+        />
       </div>
     );
   }
