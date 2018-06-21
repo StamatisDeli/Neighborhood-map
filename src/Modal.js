@@ -1,26 +1,20 @@
 import React, { Component } from 'react'
 import * as FlickrAPI from './FlickrAPI'
 
-
-
-
 class Modal extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
       }
-    }
-    componentDidMount(){
-      FlickrAPI.JavaScriptFetch()
-      //FlickrAPI.jsonFlickrFeed(data)
+
     }
 
-    drawPics(data){
-      FlickrAPI.jsonFlickrFeed(data)
+    componentDidUpdate (){
+     // FlickrAPI.startFlickr()
     }
-    
-
+  
     render() {
+      
        return (
             
             <div>

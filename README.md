@@ -32,10 +32,13 @@ I will try to make an album in Flickr and access that, instead of making many re
 -TODO: text input search field. Make a filtering function. I installed regexp. Works, but problem: My query is in Greek, and it works with greek. Ι tested in a browser, worked some stuff out. 
     -ISSUE: different results for a browser in english
     I managed to turn the funcionality to work with props and live inside App.
-        -Now I have to toggle marker visibility according to text input. It turns out I have to use marker.setVisible() and loop over the markers. On it.
+        -Now I have to toggle marker visibility according to text input. It turns out I have to use marker.setVisible() and loop over the markers. On it. Mentor Kelly finally gave me a good link to follow!
 
 -TODO: make the app responsive.
 
+-TODO: Make a modal which appears onClick and displays Flickr images
+        - I made 2 functions for open and close. 
+        I need to make the infowindows clickable:
 
 Dependances:
 escape-string-regexp
@@ -44,6 +47,7 @@ escape-string-regexp
 
 https://codeburst.io/multiple-ways-of-implementing-flickr-public-api-in-jquery-and-javascript-dbaf0f35bbef
 https://www.outsystems.com/forums/discussion/18669/open-marker-info-box-when-clicking-on-external-link/
+https://stackoverflow.com/questions/34901593/how-to-filter-an-array-from-all-elements-of-another-array
 
 
 Temp notes
