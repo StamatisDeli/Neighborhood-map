@@ -6,6 +6,7 @@ import escapeRegExp from 'escape-string-regexp'
 import * as FlickrAPI from './FlickrAPI'
 
 let markers = []
+let marker=''
 let infowindows = []
 let syros = new window.google.maps.LatLng(37.438503, 24.913934)
 const request = {
@@ -25,12 +26,12 @@ class App extends React.Component {
       map: "",
       markers: [],
       isVisible: false,
-      query: ''
+      query: '',
+      modalTitle:''
     }
     this.drawMap = this.drawMap.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.callback = this.callback.bind(this)
-    //this.showInfo = this.showInfo.bind(this)
     this.updateQuery = this.updateQuery.bind(this)
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -38,8 +39,8 @@ class App extends React.Component {
 
   componentDidMount() {
     this.drawMap()
-    FlickrAPI.fetchFlickrImages()
   }
+
   //initializing Google Maps showing Syros island
   drawMap() {
     let map = new window.google.maps.Map(document.getElementById('map'), {
@@ -71,6 +72,7 @@ class App extends React.Component {
         map: self.state.map,
         position: place.geometry.location,
         id: place.id,
+        name: place.name
         //animation: window.google.maps.Animation.DROP
       });
 
@@ -84,33 +86,38 @@ class App extends React.Component {
       </div>
       </a>`
 
+      let modalTitle = `${place.name}`
+      
       let infowindow = new window.google.maps.InfoWindow({
         maxWidth: 140,
         id: place.id,
-        content: content
+        content: content,
+        name:place.name
       })
 
       infowindows.push(infowindow)
 
       self.setState({ infowindows: infowindows, markers: markers })
-      let info
+
       window.google.maps.event.addListener(marker, 'click', function () {
+        infowindows.forEach(iw=>iw.close(this))//close all infowindows first
         infowindow.setContent(content)
         infowindow.open(self.state.map, this)
         let info = document.getElementById("info")
+        self.setState({modalTitle:modalTitle})
+        tag=self.state.modalTitle
 
         window.google.maps.event.addDomListener(info, 'click', function () {
-          //let info = document.getElementById("info")
-          console.log(info)
-          self.openModal(content)
+          console.log('click')
+          self.openModal()
         })
       })
     }
-
   }
 
   //this opens infowindows when list items are clicked
   handleClick(e) {
+    infowindows.forEach(iw=>iw.close(this))
     this.state.markers.map(marker => {
       if (marker.id === e.target.dataset.key) {
         this.state.infowindows.map(infowindow => {
@@ -123,6 +130,7 @@ class App extends React.Component {
   }
 
   updateQuery = (query) => {
+    infowindows.forEach(iw=>iw.close(this))
     let workingList = this.state.workingList
     let locations = this.state.locations
     let markers = this.state.markers
@@ -143,16 +151,19 @@ class App extends React.Component {
 
   openModal() {
     this.setState({ isVisible: true })
+    FlickrAPI.fetchFlickrImages()
   }
 
   closeModal(e) {
     this.setState({ isVisible: false })
+    infowindows.forEach(iw=>iw.close(this))
   }
 
-
+  componentWillMount(){
+    FlickrAPI.fetchFlickrImages()
+  }
 
   render() {
-
     return (
       <div className="App" role
         ="main">
@@ -175,6 +186,7 @@ class App extends React.Component {
           isVisible={this.state.isVisible}
           closeModal={this.closeModal}
           startFlickr={this.props.startFlickr}
+          modalTitle={this.state.modalTitle}
         />
         <div id="flickr"></div>
       </div>
@@ -183,52 +195,3 @@ class App extends React.Component {
 }
 
 export default App
-
-// FLICKR
-  //const key= '05be6248bf2f1e0f922813fb44b11191'
-  //const secret= 'daad362f29936164' 
-  //const user =' '
-  /*
-(function() {
-	function Flickr() {
-		this.init();
-	}
-	Flickr.prototype = {
-		init: function() {
-			window.getPhotos = this.getPhotos;
-			this.getJSON();	
-		},
-		getJSON: function() {
-			var src = "https://api.flickr.com/services/feeds/photos_public.gne?&lat=37.390110&lon=24.963928&radius=1&tags=azolimnos&format=json&jsoncallback=getPhotos";	
-			var script = document.createElement( "script" );
-				script.src = src;
-				document.body.appendChild( script );
-		},
-		getPhotos: function( data ) {
-			var limit = 5;
-			
-			if( data && data.items ) {
-				var title = data.title;
-				var items = data.items;
-				var albumTitle = title.replace( "Content from ", "" );
-				var html = "<h3>" + albumTitle + "</h3>";
-				    html += "<div class='images'>";
-				
-				for( var i = 0; i < items.length; ++i ) {
-					var item = items[i];
-					var n = i + 1;
-					if( n <= limit ) {
-						html += "<a href='" + item.link + "'><img src='" + item.media.m + "' alt='' /></a>";
-					}	
-				}
-				html += "</div>";
-				
-				document.querySelector( "#flickr" ).innerHTML = html;
-			}	
-		  }
-      };
-      document.addEventListener( "DOMContentLoaded", function() {
-        var flickrFeed = new Flickr();
-      });
-    })();
-*/

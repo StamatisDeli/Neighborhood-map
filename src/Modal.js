@@ -6,20 +6,21 @@ class Modal extends React.Component {
       super(props);
       this.state = {
       }
-
     }
 
+componentDidMount(){
+  FlickrAPI.fetchFlickrImages(this.props.modalTitle)
+}
+
     render() {
-      
+
        return (
-            
             <div>
             {this.props.isVisible ?(
             <div id="modal">
             <span className="close" onClick={this.props.closeModal}>&times;</span>
-            <div id="images">
-            
-            </div>
+            <h1>{this.props.modalTitle}</h1>
+            <div id="images"></div>
             </div>
             ):null}
             </div>
