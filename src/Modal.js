@@ -9,10 +9,6 @@ class Modal extends React.Component {
 
     }
 
-    componentDidUpdate (){
-     // FlickrAPI.startFlickr()
-    }
-  
     render() {
       
        return (

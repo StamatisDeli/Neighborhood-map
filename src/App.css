@@ -58,3 +58,13 @@ a,
 span {
   cursor:pointer;
 }
+
+#flickr{
+  display: block;
+  z-index:2;
+  position: absolute;
+  left:50%;
+  top:50%;
+  height:300px;
+  width:300px;
+}

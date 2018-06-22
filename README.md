@@ -14,11 +14,9 @@ Following the simple directions from this page:https://sanderknape.com/2017/07/i
 - After some frustrating hours, I finally managed to pass a photo from the results into the InfoWindow, as well as a heading. I think I will pass 3rd party info as <p> there or something
 
 -TODO: Get info from 3rd party API. 
-I tried Foursquare, it's not for this occasion. I am trying to get results from Flickr images and it's giving me a hard time. 
+I tried Foursquare, it's not for this occasion. I am trying to get results from Flickr images and it's giving me a hard time. I am trying to get the results I need by geolocation. Not working!
+Breakthrough:Flickr API returns a JSONP function. I found a clean solution in codeburst.io. SO, it's just an object. Makes things easy. I guess for security, it would have to be converted to JSON. - Not good according to project rubric. I need to use fetch. I managed to get a single page showing. Can be seen in commit 7.
 
-I am trying to get the results I need by geolocation. Not working!
-
-Breakthrough:Flickr API returns a JSONP function. I found a clean solution in codeburst.io. SO, it's just an object. Makes things easy. I guess for security, it would have to be converted to JSON.
 
 I will try to make an album in Flickr and access that, instead of making many requests and shorting them out.
 
@@ -32,15 +30,15 @@ I will try to make an album in Flickr and access that, instead of making many re
 -TODO: text input search field. Make a filtering function. I installed regexp. Works, but problem: My query is in Greek, and it works with greek. Ι tested in a browser, worked some stuff out. 
     -ISSUE: different results for a browser in english
     I managed to turn the funcionality to work with props and live inside App.
-        -Now I have to toggle marker visibility according to text input. It turns out I have to use marker.setVisible() and loop over the markers. On it. Mentor Kelly finally gave me a good link to follow!
-
--TODO: make the app responsive.
+        -Now I have to toggle marker visibility according to text input. It turns out I have to use marker.setVisible() and loop over the markers. On it. Mentor Kelly finally gave me a good link to follow! Done. I used .filter and .every
 
 -TODO: Make a modal which appears onClick and displays Flickr images
         - I made 2 functions for open and close. 
-        I need to make the infowindows clickable:
+        - I need to make the infowindows clickable: I passed an event listener inside the event listener so that the modal opens
 
-Dependances:
+-TODO: make the app responsive.
+
+#Dependances:
 escape-string-regexp
 
 #Resources:

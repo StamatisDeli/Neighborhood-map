@@ -3,7 +3,7 @@ import './App.css';
 import LocationList from './LocationList'
 import Modal from './Modal'
 import escapeRegExp from 'escape-string-regexp'
-
+import * as FlickrAPI from './FlickrAPI'
 
 let markers = []
 let infowindows = []
@@ -13,7 +13,7 @@ const request = {
   radius: '9500',
   query: ["Παραλία", "Paralia", "παραλίες", "Beach"]
 };
-let map = ""
+let map = "";
 
 class App extends React.Component {
   constructor(props) {
@@ -34,13 +34,11 @@ class App extends React.Component {
     this.updateQuery = this.updateQuery.bind(this)
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
-    //this.jsonFlickrFeed=this.jsonFlickrFeed.bind(this)
   }
 
   componentDidMount() {
     this.drawMap()
-
-
+    FlickrAPI.fetchFlickrImages()
   }
   //initializing Google Maps showing Syros island
   drawMap() {
@@ -78,16 +76,13 @@ class App extends React.Component {
 
       markers.push(marker)
 
-      let content =
-        `
-      <a>
+      let content =`<a>
       <div id="info">
       <strong>${place.name}</strong><br>
       <img src ='${photos ? photos[0].getUrl({ 'maxWidth': 140, 'maxHeight': 140 }) : null}'><br>
       <p>Click for more pictures</p>
       </div>
-      </a>
-      `
+      </a>`
 
       let infowindow = new window.google.maps.InfoWindow({
         maxWidth: 140,
@@ -107,11 +102,13 @@ class App extends React.Component {
         window.google.maps.event.addDomListener(info, 'click', function () {
           //let info = document.getElementById("info")
           console.log(info)
-          self.openModal()
+          self.openModal(content)
         })
       })
     }
+
   }
+
   //this opens infowindows when list items are clicked
   handleClick(e) {
     this.state.markers.map(marker => {
@@ -131,17 +128,15 @@ class App extends React.Component {
     let markers = this.state.markers
     this.setState({ query })//or query.trim()
     markers.forEach(marker => marker.setVisible(true))//turn markers on
-    
+
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i')
       workingList = locations.filter(location => match.test(location.name))
-
       //Loop through both arrays an return an array with markers not represented by markers
       const notVisible = markers.filter(marker =>
         workingList.every(place => place.id !== marker.id)
-       )
+      )
       notVisible.forEach(marker => marker.setVisible(false)) // turn them off
-
     } else { workingList = locations }
     this.setState({ workingList })
   }
@@ -152,15 +147,16 @@ class App extends React.Component {
 
   closeModal(e) {
     this.setState({ isVisible: false })
-    //e.target.infowindow.close(this.state.map, this)
   }
+
+
 
   render() {
 
     return (
       <div className="App" role
         ="main">
-        <section className="left-column" id="flickr">
+        <section className="left-column" >
           <h1>Find a wonderful beach in Syros</h1>
           <LocationList
             locations={this.state.locations}
@@ -180,6 +176,7 @@ class App extends React.Component {
           closeModal={this.closeModal}
           startFlickr={this.props.startFlickr}
         />
+        <div id="flickr"></div>
       </div>
     );
   }
