@@ -95,3 +95,16 @@ span {
   text-align: center;
   height: 5%;
 }
+
+#info {
+  background-color: rgba(242, 245, 82, 0.555);
+  text-align: center;
+  line-height: 0.1rem;
+  display: block;
+  padding: 10px;
+}
+
+#info h1{
+  font-size: 1.5rem;
+  color: black;
+}

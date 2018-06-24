@@ -50,6 +50,7 @@ Bad news: I have come to a good point, yet unfortunately results are not as expe
 -TODO: make the app responsive.
 
 -TODO: Handle network failures.
+    Made fail messages for Flickr: No image, No network
 
 #Dependances:
 escape-string-regexp
@@ -69,3 +70,40 @@ showInfo = () => {
    // force marker click
    window.google.maps.event.trigger(this.props.place.marker,'click');
 }
+
+    /*
+    window.addEventListener('offline', function(e) { 
+      let mapOff= document.getElementById('map')
+      let h= document.createElement("H1");
+      h.innerHTML+='Your browser is offline<br>Please come back later';
+      mapOff.appendChild(h);
+      console.log('offline'); });
+*/
+
+
+/*
+  fetch(request)
+    .then(response => response.json())
+    .then((data) => {
+      
+      if(data.photos.total>0){
+        h.innerHTML+='No Image from Flickr<br>We hope to fix this in the future';
+        target.appendChild(h);
+        console.log('no photo')}
+      
+      data.photos.photo.forEach(({ farm, server, id, secret, title }) => {
+        let img = document.createElement("img");
+        img.src = `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`
+        img.setAttribute("alt", `Image tile:${title}`)
+        img.setAttribute("href", "https://www.flickr.com")
+        target.appendChild(img)
+      })
+    })
+    .catch(error => { 
+      h.innerHTML+='No Network, <br> or no response from Flickr';
+      target.appendChild(h);
+      console.warn(error)
+    })
+    
+}
+*/

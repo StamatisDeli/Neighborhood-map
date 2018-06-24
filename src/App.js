@@ -42,6 +42,7 @@ class App extends React.Component {
 
   //initializing Google Maps showing Syros island
   drawMap() {
+
     let map = new window.google.maps.Map(document.getElementById('map'), {
       center: syros,
       zoom: 12,
@@ -49,6 +50,14 @@ class App extends React.Component {
     })
 
     this.setState({ map: map })
+
+    window.map.addEventListener('offline', function (e) {
+      let mapOff = document.getElementById('map')
+      let h = document.createElement("H1");
+      h.innerHTML += 'Your browser is offline<br>Please come back later';
+      mapOff.appendChild(h);
+      console.log('offline');
+    });
 
     var bounds = new window.google.maps.LatLngBounds();
     // The following group uses the location array to create an array of markers on initialize.
@@ -79,9 +88,9 @@ class App extends React.Component {
       marker.openInfoWindow = function () {
 
         let content =
-          `<div id='info'>
-        <div><strong>${marker.title}</strong></div>
-        <div><strong>Click for Pictures</strong></div>
+        `<div id='info'>
+        <div><strong><h1>${marker.title}</h1></strong></div>
+        <div><strong><p>pictures</p></strong></div>
         </div>
         `
         if (infowindow) infowindow.close();
@@ -94,9 +103,15 @@ class App extends React.Component {
       };
       // put the method in as a handler
       window.google.maps.event.addListener(marker, "click", marker.openInfoWindow);
-  
+      window.google.maps.event.addListener(marker, "click", function () {
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+          marker.setAnimation(null);
+        }, 800);
+      });
+
       bounds.extend(markers[i].position);
-      this.setState({ locations: beaches, workingList: beaches, infowindows: infowindows, markers: markers})
+      this.setState({ locations: beaches, workingList: beaches, infowindows: infowindows, markers: markers })
     }
     // Extend the boundaries of the map for each marker
     map.fitBounds(bounds);
@@ -139,9 +154,12 @@ class App extends React.Component {
 
   //dataset key = marker index
   handleClick(e, index) {
-    let self=this
     index = e.target.dataset.key
     markers[index].openInfoWindow()
+    markers[index].setAnimation(window.google.maps.Animation.BOUNCE);
+    setTimeout(function () {
+      markers[index].setAnimation(null);
+    }, 800);
   }
 
   render() {
