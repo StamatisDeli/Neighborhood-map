@@ -37,9 +37,19 @@ I am trying to get results from Flickr images and it's giving me a hard time. I 
         - I made 2 functions for open and close. Closing modal closes infowindow.
         - I need to make the infowindows clickable: I passed an event listener inside the event listener so that the modal opens. 
 
+-BUG: general css rules can affect the map, like img. Easy fix.
+
+Bad news: I have come to a good point, yet unfortunately results are not as expected, because of language issues. I have to start over with hard-coded locations.
+    -Made a json file with locations
+    -Made markers based on json file
+    -Restored functionality. The code is rearranged and now I have to find new solutions.
+        I converted the id of the json items starting from 0. This way, the id is the same index of the markers, so I used that for opening infowindows by clicking list items.
+        -Need to find how  to close infowindow when the modal is closed. 
+            Done: Just passed infowindow to state, and close that!
+
 -TODO: make the app responsive.
 
--BUG: general css rules can affect the map, like img. Easy fix.
+-TODO: Handle network failures.
 
 #Dependances:
 escape-string-regexp
@@ -49,6 +59,8 @@ escape-string-regexp
 https://codeburst.io/multiple-ways-of-implementing-flickr-public-api-in-jquery-and-javascript-dbaf0f35bbef
 https://www.outsystems.com/forums/discussion/18669/open-marker-info-box-when-clicking-on-external-link/
 https://stackoverflow.com/questions/34901593/how-to-filter-an-array-from-all-elements-of-another-array
+https://stackoverflow.com/questions/3554723/how-to-open-marker-info-window-outside-of-google-map
+Udacity class code.
 
 
 Temp notes

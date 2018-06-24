@@ -1,27 +1,23 @@
-import React from 'react'
-import App from './App'
-
-
 /**FLICKR
  * const key= '05be6248bf2f1e0f922813fb44b11191'
  * const secret= 'daad362f29936164'
- */ 
+ */
 
 //key,results per request=10 
 //let tag = this.props.modalTitle
 
-
 export const fetchFlickrImages = (tag) => {
   let target = document.getElementById('images')
-  //let tag = 'azolimnos'
+  //console.log(tag)
   const request = `https://api.flickr.com/services/rest/?
 &api_key=05be6248bf2f1e0f922813fb44b11191
 &method=flickr.photos.search
 &format=json&nojsoncallback=1
 &per_page=10
-&tags=syros%2C ${tag}
-&text= ${tag}`
-
+&tag_mode=all
+&tags=syros%2C+${tag}
+`
+  //console.log(request)
   fetch(request)
     .then(response => response.json())
     .then((data) => {
@@ -31,13 +27,9 @@ export const fetchFlickrImages = (tag) => {
         img.setAttribute("alt", `Image tile:${title}`)
         img.setAttribute("href", "https://www.flickr.com")
         target.appendChild(img)
-      });
+      })
     })
     .catch(error => { console.warn(error); })
 }
 
-
-
-export const getPics = () => {
-
-}
+//:target.insertAdjacentHTML('beforeend',`<h1>No response from Flickr<h1>`)

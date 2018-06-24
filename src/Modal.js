@@ -8,9 +8,6 @@ class Modal extends React.Component {
       }
     }
 
-componentDidMount(){
-  FlickrAPI.fetchFlickrImages(this.props.modalTitle)
-}
 
     render() {
 

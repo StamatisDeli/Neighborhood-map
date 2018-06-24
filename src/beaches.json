@@ -1,0 +1,21 @@
+[
+{"name":"Kini", "location":{"lat": 37.4461269, "lng": 24.90025730000002}, "id":0},
+{"name":"Galissas", "location":{"lat": 37.4221006, "lng": 24.87788820000003}, "id":1},
+{"name":"Armeos", "location":{"lat": 37.4195189, "lng": 24.874082600000065},"id":2},
+{"name":"Voulgari", "location":{"lat": 37.3926852, "lng": 24.884587399999987},"id":3},
+{"name":"Delfini", "location":{"lat": 37.4583922, "lng": 24.8985189},"id":4},
+{"name":"Ahladi", "location":{"lat": 37.3880696, "lng": 24.940544700000032},"id":5},
+{"name":"Azolimnos", "location":{"lat": 37.4102735, "lng": 24.96399930000007},"id":6},
+{"name":"Fabrika", "location":{"lat": 37.3919399, "lng": 24.952984600000036},"id":7},
+{"name":"Grammata", "location":{"lat": 37.4989744, "lng": 24.895487799999955},"id":8},
+{"name":"Kokkina", "location":{"lat": 37.3951236, "lng": 24.87074080000002},"id":9},
+{"name":"Varvarousa", "location":{"lat": 37.4682799, "lng": 24.896308699999963},"id":10},
+{"name":"Vari", "location":{"lat": 37.3901063, "lng": 24.945533299999965},"id":11},
+{"name":"Foinikas", "location":{"lat": 37.397091, "lng": 24.881677800000034},"id":12},
+{"name":"Asteria", "location":{"lat": 37.4466131, "lng": 24.947524899999962},"id":13},
+{"name":"Lotos", "location":{"lat": 37.4432608, "lng": 24.896032699999978},"id":14},
+{"name":"Lia", "location":{"lat": 37.4892461, "lng": 24.901578500000028},"id":15},
+{"name":"Abela", "location":{"lat": 37.376455, "lng": 24.90597260000004},"id":16},
+{"name":"Aetos", "location":{"lat": 37.4728912, "lng": 24.90186189999997},"id":17},
+{"name":"Agathopes", "location":{"lat": 37.3854249, "lng": 24.880986099999973},"id":18}
+]
