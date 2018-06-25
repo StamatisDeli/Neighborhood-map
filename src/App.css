@@ -2,14 +2,13 @@ body,
 html {
     height: 100%;
 }
-/*
+
 html,
 html * {
     padding: 0;
     margin: 0;
-
 }
-*/
+
 .App {
   display: flex;
   width: 100%;
@@ -17,9 +16,10 @@ html * {
 }
 
 h1 {
-  font-size:1rem;
+  font-size:1.5rem;
   color: aliceblue;
   text-align: center;
+  line-height: 1.5;
 }
 
 .left-column {
@@ -27,6 +27,13 @@ h1 {
   height: 100vh;
   background-color: rgb(0, 0, 66);
   display: flex;
+  flex-direction: column;
+  line-height: 1rem;
+}
+
+#side-bar{
+  display: flex;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -41,6 +48,7 @@ ul {
   color: rgb(230, 233, 255);
   line-height: 1.5;
   cursor:pointer;
+  padding:1rem;
 }
 
 #modal{
@@ -77,23 +85,23 @@ span {
   z-index:1;
   height:95%;
   width:100%;
-
   justify-content: center;
   align-items: center;
   overflow: scroll;
-
 }
 
 #images img {
   max-height:300px;
   max-width: 300px;
-  padding: 1rem
+  margin: 10px;
+  outline: rgba(236, 236, 231, 0.295) solid 1px;
 }
 
 #modal h1{
   font-size: 1.5rem;
   text-align: center;
   height: 5%;
+  color: yellow;
 }
 
 #info {
@@ -102,9 +110,10 @@ span {
   line-height: 0.1rem;
   display: block;
   padding: 10px;
+  cursor: pointer
 }
 
 #info h1{
   font-size: 1.5rem;
-  color: black;
+  color: rgb(8, 8, 66)
 }

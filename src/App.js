@@ -20,7 +20,7 @@ class App extends React.Component {
     this.state = {
       locations: [],
       workingList: [],
-      infowindow: {},
+      infowindow: null,
       infowindows: [],
       map: "",
       markers: [],
@@ -132,8 +132,10 @@ class App extends React.Component {
     this.state.infowindow.close(map, marker)
   }
 
-  updateQuery(query) {
-    this.state.infowindow.close(map, marker)
+  updateQuery(query, infowindow) {
+    //if (infowindow) infowindow.close();
+    //this.state.infowindow.length===0?null:
+    //this.state.infowindow.length>0?this.state.infowindow.close(map, marker):null
     let workingList = this.state.workingList
     let locations = this.state.locations
     let markers = this.state.markers
@@ -141,6 +143,10 @@ class App extends React.Component {
     markers.forEach(marker => marker.setVisible(true))//turn markers on
 
     if (query) {
+      this.state.infowindow===null?null:
+      this.state.infowindow!==null?this.state.infowindow.close(map, marker):null
+
+
       const match = new RegExp(escapeRegExp(query), 'i')
       workingList = locations.filter(location => match.test(location.name))
       //Loop through both arrays an return an array with markers not represented by markers
@@ -167,7 +173,7 @@ class App extends React.Component {
       <div className="App" role
         ="main">
         <section className="left-column" >
-          <h1>Find a wonderful beach in Syros</h1>
+          <h1>Find a great beach in Syros</h1>
           <LocationList
             locations={this.state.locations}
             handleClick={this.handleClick}
