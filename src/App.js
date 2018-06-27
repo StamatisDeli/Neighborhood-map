@@ -5,9 +5,8 @@ import Modal from './Modal'
 import escapeRegExp from 'escape-string-regexp'
 import * as FlickrAPI from './FlickrAPI'
 import beaches from './beaches.json'
+import markerIcon from './resort_pinlet-1-small.png'
 
-
-//let info = document.getElementById("info")
 let markers = []
 let marker = ''
 let infowindows = []
@@ -27,17 +26,21 @@ class App extends React.Component {
       isVisible: false,
       query: '',
       modalTitle: '',
-      marker: []
+      marker: [],
+      searchHidden: window.innerWidth > 550?false:window.innerWidth < 550?true:null
     }
     this.drawMap = this.drawMap.bind(this)
     this.updateQuery = this.updateQuery.bind(this)
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.toggleSearch = this.toggleSearch.bind(this)
+    this.screenListener = this.screenListener.bind(this)
   }
 
   componentDidMount() {
     this.drawMap()
+    this.screenListener()
   }
 
   //initializing Google Maps showing Syros island
@@ -45,19 +48,11 @@ class App extends React.Component {
 
     let map = new window.google.maps.Map(document.getElementById('map'), {
       center: syros,
-      zoom: 12,
+      zoom: 13,
       mapTypeId: 'roadmap',
     })
 
     this.setState({ map: map })
-
-    window.map.addEventListener('offline', function (e) {
-      let mapOff = document.getElementById('map')
-      let h = document.createElement("H1");
-      h.innerHTML += 'Your browser is offline<br>Please come back later';
-      mapOff.appendChild(h);
-      console.log('offline');
-    });
 
     var bounds = new window.google.maps.LatLngBounds();
     // The following group uses the location array to create an array of markers on initialize.
@@ -71,7 +66,7 @@ class App extends React.Component {
         map: map,
         position: position,
         title: title,
-        //animation: window.google.maps.Animation.DROP,
+        icon:markerIcon,
         id: id
       });
       // Push the marker to our array of markers.
@@ -88,7 +83,7 @@ class App extends React.Component {
       marker.openInfoWindow = function () {
 
         let content =
-        `<div id='info'>
+          `<div id='info'>
         <div><strong><h1>${marker.title}</h1></strong></div>
         <div><strong><p>pictures</p></strong></div>
         </div>
@@ -99,7 +94,6 @@ class App extends React.Component {
         self.openModal()
         self.setState({ modalTitle: title })
         self.setState({ infowindow: infowindow })
-
       };
       // put the method in as a handler
       window.google.maps.event.addListener(marker, "click", marker.openInfoWindow);
@@ -133,9 +127,6 @@ class App extends React.Component {
   }
 
   updateQuery(query, infowindow) {
-    //if (infowindow) infowindow.close();
-    //this.state.infowindow.length===0?null:
-    //this.state.infowindow.length>0?this.state.infowindow.close(map, marker):null
     let workingList = this.state.workingList
     let locations = this.state.locations
     let markers = this.state.markers
@@ -143,9 +134,8 @@ class App extends React.Component {
     markers.forEach(marker => marker.setVisible(true))//turn markers on
 
     if (query) {
-      this.state.infowindow===null?null:
-      this.state.infowindow!==null?this.state.infowindow.close(map, marker):null
-
+      this.state.infowindow === null ? null :
+        this.state.infowindow !== null ? this.state.infowindow.close(map, marker) : null
 
       const match = new RegExp(escapeRegExp(query), 'i')
       workingList = locations.filter(location => match.test(location.name))
@@ -158,7 +148,6 @@ class App extends React.Component {
     this.setState({ workingList })
   }
 
-  //dataset key = marker index
   handleClick(e, index) {
     index = e.target.dataset.key
     markers[index].openInfoWindow()
@@ -168,22 +157,49 @@ class App extends React.Component {
     }, 800);
   }
 
+  toggleSearch() {
+    this.setState(prevState => ({
+      searchHidden: !prevState.searchHidden
+    }));
+  }
+
+  screenListener(){
+    let self = this
+    window.addEventListener("resize", function(){
+      window.innerWidth < 550?self.setState({searchHidden:true}):
+      window.innerWidth > 550?self.setState({searchHidden:false}):null
+    });
+    /*
+    window.addEventListener("load", function(event) {
+      window.innerWidth < 550?self.setState(({searchHidden:true})):null
+    });
+    */
+  }
+
   render() {
     return (
-      <div className="App" role
-        ="main">
-        <section className="left-column" >
-          <h1>Find a great beach in Syros</h1>
-          <LocationList
-            locations={this.state.locations}
-            handleClick={this.handleClick}
-            updateQuery={this.updateQuery}
-            query={this.state.query}
-            markers={this.state.markers}
-            workingList={this.state.workingList}
-          />
-        </section>
-        <section className="map" id="map">
+      <main className="App" role="main" >
+        <section className="map" id="map"></section>
+        <section className="right-column" >
+          <header className="header" aria-label="Application Header">
+            <p>Powered by Google Maps & Flickr.com</p>
+            <h3>find a great beach in</h3>
+            <h1>Syros</h1>
+            <button id='toggleButton' 
+            title='TOGGLE LIST'
+            type='button'
+              onClick={this.toggleSearch}
+            >{this.state.searchHidden? 'SHOW' : 'HIDE'}</button>
+          </header>
+          {!this.state.searchHidden ?
+            <LocationList
+              locations={this.state.locations}
+              handleClick={this.handleClick}
+              updateQuery={this.updateQuery}
+              query={this.state.query}
+              markers={this.state.markers}
+              workingList={this.state.workingList}
+            /> : null}
         </section>
         <Modal
           isVisible={this.state.isVisible}
@@ -191,8 +207,7 @@ class App extends React.Component {
           startFlickr={this.props.startFlickr}
           modalTitle={this.state.modalTitle}
         />
-        <div id="flickr"></div>
-      </div>
+      </main>
     );
   }
 }

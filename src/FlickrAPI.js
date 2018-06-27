@@ -9,7 +9,7 @@
 export const fetchFlickrImages = (tag) => {
   let target = document.getElementById('images')
   let h = document.createElement("H1")
-  //console.log(tag)
+
   const request = `https://api.flickr.com/services/rest/?
 &api_key=05be6248bf2f1e0f922813fb44b11191
 &method=flickr.photos.search

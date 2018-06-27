@@ -8,17 +8,17 @@ class LocationList extends React.Component {
     }
 
     render() {
-
+        
         return (
             <div id='side-bar'>
             <input 
-            id='input' 
+            id='input-box' 
             type='text' 
             placeholder='Enter beach name' 
             value={this.state.query}
             onChange={e=>this.props.updateQuery(e.target.value)}
             />
-            <ul>
+            <ul aria-label = 'List of beaches'>
             {this.props.workingList.map( location =>
             <li data-key={location.id} key={location.id} role="button" 
             onClick={e=>this.props.handleClick(e)}> 
@@ -28,6 +28,7 @@ class LocationList extends React.Component {
             </ul>
             </div>
         );
+    
     }
 }
 

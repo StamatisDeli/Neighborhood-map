@@ -6,13 +6,16 @@
     <meta name="theme-color" content="#000000">
     <meta name="description" content="Find a wonderfull beach in Syros Island">
     <meta name="author" content="Stamatis Deliyannis">
+    <meta name="keywords" content="Syros, beach, search">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <link href="https://fonts.googleapis.com/css?family=Galada" rel="stylesheet">
+    <link rel="icon" sizes="192x192" href="resort_pinlet-1-small.png">
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/resort_pinlet-1-small.png">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -31,5 +34,12 @@
 
     <!--Passing Maps the usual way!-->
     <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAQF9ZueiX06ah5l2KTylOV45HdTGl07bk&libraries=places'></script>
+    <script>window.gm_authFailure=()=> { 
+      let root = document.getElementById('map');
+      let divMsg = document.createElement('DIV');
+      divMsg.innerHTML = `<div class="error">Google Maps failed to load. <br>
+        Please come back later</div>`
+      root.prepend(divMsg)
+      console.log('Maps Failed') };</script>
   </body>
 </html>
