@@ -155,6 +155,7 @@ class App extends React.Component {
     setTimeout(function () {
       markers[index].setAnimation(null);
     }, 800);
+    window.innerWidth < 550?this.setState({searchHidden:true}):null
   }
 
   toggleSearch() {
@@ -169,11 +170,6 @@ class App extends React.Component {
       window.innerWidth < 550?self.setState({searchHidden:true}):
       window.innerWidth > 550?self.setState({searchHidden:false}):null
     });
-    /*
-    window.addEventListener("load", function(event) {
-      window.innerWidth < 550?self.setState(({searchHidden:true})):null
-    });
-    */
   }
 
   render() {
