@@ -1,17 +1,44 @@
 # Neighborhood Map Udacity Project
 
-This an app that uses Google Maps to help the user find whatever they are interested in in Syros island
+This an app that uses Google Maps to help the user find beaches in Syros island. Flickr.com provides photos of the beaches where available.
 
+# How to use
+
+- Click on a beach marker that opens an infowindow that displays the name of the beach.
+- Click on the infowindow to see the Flickr images.
+- You can click on an item on the provided list and the appropriate marker will display its infowindow.
+- You can type in the input field and filter the beaches alphabetically (Try not to laugh with the weird Greek names).
+- If you are on a mobile or tablet screen, the list is automatically hidden, and you can open it by clicking on the SHOW button (and close it from the same button).
+
+# How ro run the app
+
+    1. Download this repo
+    2. Run: npm install in working directory
+    3. Install Dependances (see Dependances)
+    4. Run npm start to initialize.
+
+A new browser window will initialize and display the app. In case it doesn't, navigate to http://localhost:3000/ in your browser
+
+# Service Worker
+The service worker will cashe the app in Production mode. Take the folowing steps:
+1. npm run build
+2. npm install -g serve
+3. In build directory: serve -s 
+The app will be hosted at http://localhost:5000
+
+# Dependances:
+
+escape-string-regexp
 
 # Journal
 
-After consulting with the community, I begun setting an initial setup of th project. Do some styling.
+After consulting with the community, I begun setting an initial setup of th project. Did some styling.
 
 Following the simple directions from this page:https://sanderknape.com/2017/07/integrating-reactjs-google-maps-widget/, I managed to implement a map!. That was not so bad, although I searched quite a bit for a clean solution.
 
 - Passed markers. excluded beach bars by word
 
-- After some frustrating hours, I finally managed to pass a photo from the results into the InfoWindow, as well as a heading. I think I will pass 3rd party info as <p> there or something
+- After some frustrating hours, I finally managed to pass a photo from the results into the InfoWindow, as well as a heading. I think I will pass 3rd party info as 'p' there or something
 
 -TODO: Get info from 3rd party API. 
 I tried Foursquare, it's not for this occasion. 
@@ -20,6 +47,7 @@ I am trying to get results from Flickr images and it's giving me a hard time. I 
         -Pass flickr images to modal.
             Done.
         -TODO: Pass custom images to modal.
+            Done.
 
 -TODO: make the results appear in a list on the left. Do setState with results obviously. Maybe make a separate component rendering for that.
     Done.
@@ -39,7 +67,7 @@ I am trying to get results from Flickr images and it's giving me a hard time. I 
 
 -BUG: general css rules can affect the map, like img. Easy fix.
 
-Bad news: I have come to a good point, yet unfortunately results are not as expected, because of language issues. I have to start over with hard-coded locations.
+    Bad news: I have come to a good point, yet unfortunately results are not as expected, because of language issues. I have to start over with hard-coded locations.
     -Made a json file with locations
     -Made markers based on json file
     -Restored functionality. The code is rearranged and now I have to find new solutions.
@@ -47,63 +75,32 @@ Bad news: I have come to a good point, yet unfortunately results are not as expe
         -Need to find how  to close infowindow when the modal is closed. 
             Done: Just passed infowindow to state, and close that!
 
--TODO: make the app responsive.
+-TODO: make the app responsive. I have to fix the map to re-center itself. In the same function I fixed the list - button functionality.
+    Done.
+
+-TODO: Make a favicon: Tricky! I had to fiddle with manifest.json and index.html
+-TODO: Custom beach markers. Fished it from google maps.
+    Done.
 
 -TODO: Handle network failures.
     Made fail messages for Flickr: No image, No network
+    I think I fixed the google maps error, too.
 
-#Dependances:
-escape-string-regexp
+-TODO: Accessibility: fixed some aria stuff and tab-index. Tab was not driving to list items.
 
-#Resources:
+# Resources:
 
 https://codeburst.io/multiple-ways-of-implementing-flickr-public-api-in-jquery-and-javascript-dbaf0f35bbef
+
 https://www.outsystems.com/forums/discussion/18669/open-marker-info-box-when-clicking-on-external-link/
+
 https://stackoverflow.com/questions/34901593/how-to-filter-an-array-from-all-elements-of-another-array
+
 https://stackoverflow.com/questions/3554723/how-to-open-marker-info-window-outside-of-google-map
+
 Udacity class code.
 
+https://stackoverflow.com/questions/49083768/react-setstate-with-media-queries
 
-Temp notes
+https://reactjs.org/docs/handling-events.html
 
-showInfo = () => {
-   // force marker click
-   window.google.maps.event.trigger(this.props.place.marker,'click');
-}
-
-    /*
-    window.addEventListener('offline', function(e) { 
-      let mapOff= document.getElementById('map')
-      let h= document.createElement("H1");
-      h.innerHTML+='Your browser is offline<br>Please come back later';
-      mapOff.appendChild(h);
-      console.log('offline'); });
-*/
-
-
-/*
-  fetch(request)
-    .then(response => response.json())
-    .then((data) => {
-      
-      if(data.photos.total>0){
-        h.innerHTML+='No Image from Flickr<br>We hope to fix this in the future';
-        target.appendChild(h);
-        console.log('no photo')}
-      
-      data.photos.photo.forEach(({ farm, server, id, secret, title }) => {
-        let img = document.createElement("img");
-        img.src = `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`
-        img.setAttribute("alt", `Image tile:${title}`)
-        img.setAttribute("href", "https://www.flickr.com")
-        target.appendChild(img)
-      })
-    })
-    .catch(error => { 
-      h.innerHTML+='No Network, <br> or no response from Flickr';
-      target.appendChild(h);
-      console.warn(error)
-    })
-    
-}
-*/

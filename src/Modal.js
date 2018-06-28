@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import * as FlickrAPI from './FlickrAPI'
+import React from 'react'
 
 class Modal extends React.Component {
     constructor(props) {

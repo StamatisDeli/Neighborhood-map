@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import LocationList from './LocationList'
 import Modal from './Modal'
@@ -27,7 +27,8 @@ class App extends React.Component {
       query: '',
       modalTitle: '',
       marker: [],
-      searchHidden: window.innerWidth > 550?false:window.innerWidth < 550?true:null
+      searchHidden: window.innerWidth > 550 ? false : window.innerWidth < 550 ? true : null,
+      bounds:{}
     }
     this.drawMap = this.drawMap.bind(this)
     this.updateQuery = this.updateQuery.bind(this)
@@ -53,8 +54,18 @@ class App extends React.Component {
     })
 
     this.setState({ map: map })
+/*
+    window.google.maps.event.addDomListenerOnce(map, 'idle', function () {
+      window.google.maps.event.addDomListener(window, 'resize', function () {
+          map.setCenter(syros);
+          //window.innerWidth < 350 ?map.setZoom(11):window.innerWidth > 400 ?map.setZoom(13):null
+          console.log('resize')
 
+      });
+  });
+*/
     var bounds = new window.google.maps.LatLngBounds();
+    
     // The following group uses the location array to create an array of markers on initialize.
     for (let i = 0; i < beaches.length; i++) {
       // Get the position from the location array.
@@ -66,7 +77,7 @@ class App extends React.Component {
         map: map,
         position: position,
         title: title,
-        icon:markerIcon,
+        icon: markerIcon,
         id: id
       });
       // Push the marker to our array of markers.
@@ -85,7 +96,7 @@ class App extends React.Component {
         let content =
           `<div id='info'>
         <div><strong><h1>${marker.title}</h1></strong></div>
-        <div><strong><p>pictures</p></strong></div>
+        <div><strong><p>Click for pictures</p></strong></div>
         </div>
         `
         if (infowindow) infowindow.close();
@@ -105,7 +116,7 @@ class App extends React.Component {
       });
 
       bounds.extend(markers[i].position);
-      this.setState({ locations: beaches, workingList: beaches, infowindows: infowindows, markers: markers })
+      this.setState({ locations: beaches, workingList: beaches, infowindows: infowindows, markers: markers, bounds:bounds })
     }
     // Extend the boundaries of the map for each marker
     map.fitBounds(bounds);
@@ -134,8 +145,8 @@ class App extends React.Component {
     markers.forEach(marker => marker.setVisible(true))//turn markers on
 
     if (query) {
-      this.state.infowindow === null ? null :
-        this.state.infowindow !== null ? this.state.infowindow.close(map, marker) : null
+      this.state.infowindow === null?null:
+      this.state.infowindow!==null?this.state.infowindow.close(map, marker) : null;
 
       const match = new RegExp(escapeRegExp(query), 'i')
       workingList = locations.filter(location => match.test(location.name))
@@ -149,13 +160,20 @@ class App extends React.Component {
   }
 
   handleClick(e, index) {
+
+    let locations = this.state.locations
+    let markers = this.state.markers
+    e.preventDefault()
     index = e.target.dataset.key
     markers[index].openInfoWindow()
     markers[index].setAnimation(window.google.maps.Animation.BOUNCE);
     setTimeout(function () {
       markers[index].setAnimation(null);
     }, 800);
-    window.innerWidth < 550?this.setState({searchHidden:true}):null
+    
+    window.innerWidth < 550 ? this.setState({ searchHidden: true }) : null
+    this.setState({ workingList:locations })
+    markers.forEach(marker => marker.setVisible(true))
   }
 
   toggleSearch() {
@@ -164,12 +182,14 @@ class App extends React.Component {
     }));
   }
 
-  screenListener(){
+  screenListener() {
     let self = this
-    window.addEventListener("resize", function(){
-      window.innerWidth < 550?self.setState({searchHidden:true}):
-      window.innerWidth > 550?self.setState({searchHidden:false}):null
+    window.addEventListener("resize", function () {
+      window.innerWidth < 550 ? self.setState({ searchHidden: true }) :
+        window.innerWidth > 550 ? self.setState({ searchHidden: false }) : null
+        self.state.map.fitBounds(self.state.bounds)//this fits map in different screens
     });
+
   }
 
   render() {
@@ -181,11 +201,11 @@ class App extends React.Component {
             <p>Powered by Google Maps & Flickr.com</p>
             <h3>find a great beach in</h3>
             <h1>Syros</h1>
-            <button id='toggleButton' 
-            title='TOGGLE LIST'
-            type='button'
+            <button id='toggleButton'
+              title='TOGGLE LIST'
+              type='button'
               onClick={this.toggleSearch}
-            >{this.state.searchHidden? 'SHOW' : 'HIDE'}</button>
+            >{this.state.searchHidden ? 'SHOW' : 'HIDE'}</button>
           </header>
           {!this.state.searchHidden ?
             <LocationList
@@ -195,6 +215,7 @@ class App extends React.Component {
               query={this.state.query}
               markers={this.state.markers}
               workingList={this.state.workingList}
+              searchHidden={this.state.searchHidden}
             /> : null}
         </section>
         <Modal
