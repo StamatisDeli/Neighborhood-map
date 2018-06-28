@@ -28,7 +28,7 @@ class App extends React.Component {
       modalTitle: '',
       marker: [],
       searchHidden: window.innerWidth > 550 ? false : window.innerWidth < 550 ? true : null,
-      bounds:{}
+      bounds: {}
     }
     this.drawMap = this.drawMap.bind(this)
     this.updateQuery = this.updateQuery.bind(this)
@@ -37,11 +37,16 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this)
     this.toggleSearch = this.toggleSearch.bind(this)
     this.screenListener = this.screenListener.bind(this)
+    this.errMsg = this.errMsg.bind(this)
   }
 
   componentDidMount() {
+
     this.drawMap()
     this.screenListener()
+    
+    if (!navigator.onLine)
+      this.errMsg()
   }
 
   //initializing Google Maps showing Syros island
@@ -54,18 +59,9 @@ class App extends React.Component {
     })
 
     this.setState({ map: map })
-/*
-    window.google.maps.event.addDomListenerOnce(map, 'idle', function () {
-      window.google.maps.event.addDomListener(window, 'resize', function () {
-          map.setCenter(syros);
-          //window.innerWidth < 350 ?map.setZoom(11):window.innerWidth > 400 ?map.setZoom(13):null
-          console.log('resize')
 
-      });
-  });
-*/
     var bounds = new window.google.maps.LatLngBounds();
-    
+
     // The following group uses the location array to create an array of markers on initialize.
     for (let i = 0; i < beaches.length; i++) {
       // Get the position from the location array.
@@ -116,10 +112,19 @@ class App extends React.Component {
       });
 
       bounds.extend(markers[i].position);
-      this.setState({ locations: beaches, workingList: beaches, infowindows: infowindows, markers: markers, bounds:bounds })
+      this.setState({ locations: beaches, workingList: beaches, infowindows: infowindows, markers: markers, bounds: bounds })
     }
     // Extend the boundaries of the map for each marker
     map.fitBounds(bounds);
+  }
+
+  errMsg(){
+    let root = document.getElementById('map');
+      let divMsg = document.createElement('DIV');
+      divMsg.innerHTML = `<div class="error">Google Maps failed to load. <br>
+        Please come back later!</div>`
+      root.prepend(divMsg)
+    console.log('map fail')
   }
 
   openModal(infowindow) {
@@ -145,8 +150,8 @@ class App extends React.Component {
     markers.forEach(marker => marker.setVisible(true))//turn markers on
 
     if (query) {
-      this.state.infowindow === null?null:
-      this.state.infowindow!==null?this.state.infowindow.close(map, marker) : null;
+      this.state.infowindow === null ? null :
+        this.state.infowindow !== null ? this.state.infowindow.close(map, marker) : null;
 
       const match = new RegExp(escapeRegExp(query), 'i')
       workingList = locations.filter(location => match.test(location.name))
@@ -170,9 +175,9 @@ class App extends React.Component {
     setTimeout(function () {
       markers[index].setAnimation(null);
     }, 800);
-    
+
     window.innerWidth < 550 ? this.setState({ searchHidden: true }) : null
-    this.setState({ workingList:locations })
+    this.setState({ workingList: locations })
     markers.forEach(marker => marker.setVisible(true))
   }
 
@@ -187,15 +192,16 @@ class App extends React.Component {
     window.addEventListener("resize", function () {
       window.innerWidth < 550 ? self.setState({ searchHidden: true }) :
         window.innerWidth > 550 ? self.setState({ searchHidden: false }) : null
-        self.state.map.fitBounds(self.state.bounds)//this fits map in different screens
+      self.state.map.fitBounds(self.state.bounds)//this fits map in different screens
     });
-
   }
 
   render() {
     return (
       <main className="App" role="main" >
+
         <section className="map" id="map"></section>
+
         <section className="right-column" >
           <header className="header" aria-label="Application Header">
             <p>Powered by Google Maps & Flickr.com</p>

@@ -84,7 +84,7 @@ I am trying to get results from Flickr images and it's giving me a hard time. I 
 
 -TODO: Handle network failures.
     Made fail messages for Flickr: No image, No network
-    I think I fixed the google maps error, too.
+    I think I fixed the google maps error, too. Nope, I had to do it again. I think I found an easy fix.
 
 -TODO: Accessibility: fixed some aria stuff and tab-index. Tab was not driving to list items.
 
