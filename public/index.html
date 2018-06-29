@@ -32,14 +32,16 @@
 
     <div id="root"></div>
 
-    <!--Passing Maps the usual way!-->
-    <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAQF9ZueiX06ah5l2KTylOV45HdTGl07bk&libraries=places'></script>
+    <!--Google Maps will be appended here-->
+   
+
     <script>window.gm_authFailure=()=> { 
       let root = document.getElementById('map');
       let divMsg = document.createElement('DIV');
       divMsg.innerHTML = `<div class="error">Google Maps failed to load. <br>
-        Please come back later</div>`
+        Please come back later.</div>`
       root.prepend(divMsg)
-      console.log('Maps Failed') };</script>
+      console.log('Maps Failed Authendication') };</script>
+
   </body>
 </html>

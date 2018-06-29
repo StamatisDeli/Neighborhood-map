@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import LocationList from './LocationList'
 import Modal from './Modal'
@@ -10,7 +10,6 @@ import markerIcon from './resort_pinlet-1-small.png'
 let markers = []
 let marker = ''
 let infowindows = []
-let syros = new window.google.maps.LatLng(37.438503, 24.913934)
 let map = "";
 
 class App extends React.Component {
@@ -38,19 +37,37 @@ class App extends React.Component {
     this.toggleSearch = this.toggleSearch.bind(this)
     this.screenListener = this.screenListener.bind(this)
     this.errMsg = this.errMsg.bind(this)
+    this.loadJS = this.loadJS.bind(this)
   }
+
 
   componentDidMount() {
 
-    this.drawMap()
+    window.drawMap = this.drawMap;
+    // Asynchronously load the Google Maps script, passing in the callback reference
+    this.loadJS(
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAQF9ZueiX06ah5l2KTylOV45HdTGl07bk&callback=drawMap"
+    );
+
     this.screenListener()
-    
+    //when offline, do this:
     if (!navigator.onLine)
       this.errMsg()
   }
 
+  //this appends the map API to the dom
+  loadJS(src) {
+    let ref = window.document.getElementsByTagName("script")[0];
+    let script = window.document.createElement("script");
+    script.src = src;
+    script.async = true;
+    script.onerror = this.errMsg
+    ref.parentNode.insertBefore(script, ref);
+  }
+
   //initializing Google Maps showing Syros island
   drawMap() {
+    let syros = new window.google.maps.LatLng(37.438503, 24.913934)
 
     let map = new window.google.maps.Map(document.getElementById('map'), {
       center: syros,
@@ -60,7 +77,7 @@ class App extends React.Component {
 
     this.setState({ map: map })
 
-    var bounds = new window.google.maps.LatLngBounds();
+    let bounds = new window.google.maps.LatLngBounds()
 
     // The following group uses the location array to create an array of markers on initialize.
     for (let i = 0; i < beaches.length; i++) {
@@ -118,13 +135,13 @@ class App extends React.Component {
     map.fitBounds(bounds);
   }
 
-  errMsg(){
+  //display a message when offline
+  errMsg() {
     let root = document.getElementById('map');
-      let divMsg = document.createElement('DIV');
-      divMsg.innerHTML = `<div class="error">Google Maps failed to load. <br>
+    let divMsg = document.createElement('DIV');
+    divMsg.innerHTML = `<div class="error">Google Maps failed to load. <br>
         Please come back later!</div>`
-      root.prepend(divMsg)
-    console.log('map fail')
+    root.prepend(divMsg)
   }
 
   openModal(infowindow) {
@@ -200,7 +217,7 @@ class App extends React.Component {
     return (
       <main className="App" role="main" >
 
-        <section className="map" id="map"></section>
+        <section ref="map" className="map" id="map" role="application"></section>
 
         <section className="right-column" >
           <header className="header" aria-label="Application Header">
@@ -236,3 +253,4 @@ class App extends React.Component {
 }
 
 export default App
+

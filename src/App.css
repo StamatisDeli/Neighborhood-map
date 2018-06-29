@@ -190,10 +190,6 @@ span {
     justify-content: center;
 }
 
-.gm-err-container {
-    display: none;
-}
-
 @media only screen and (max-width: 730px) {
     .right-column {
         width: 35%;
@@ -215,8 +211,8 @@ span {
     }
     #map {
         width: 100%;
-        bottom:0;
-        height:88%;
+        bottom: 0;
+        height: 88%;
     }
     #side-bar {
         z-index: 1000;

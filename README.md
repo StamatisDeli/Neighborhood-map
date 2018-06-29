@@ -88,6 +88,15 @@ I am trying to get results from Flickr images and it's giving me a hard time. I 
 
 -TODO: Accessibility: fixed some aria stuff and tab-index. Tab was not driving to list items.
 
+-PROBLEM: The map needs to load asynchronously, so the API call needs to be appended to the DOM after React initilizes, so I made a function and called it inside componentDidMount. Fixed some hiccups.
+
+    DONE!!!!!!!!!!
+    THIS APP TOOK ME A MONTH TO COMPLETE!
+
+# Acknowledgements:
+
+I would like to thank my mentor  Kelli Blalock for this one.
+
 # Resources:
 
 https://codeburst.io/multiple-ways-of-implementing-flickr-public-api-in-jquery-and-javascript-dbaf0f35bbef
@@ -103,4 +112,6 @@ Udacity class code.
 https://stackoverflow.com/questions/49083768/react-setstate-with-media-queries
 
 https://reactjs.org/docs/handling-events.html
+
+https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
 
