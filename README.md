@@ -2,6 +2,11 @@
 
 This an app that uses Google Maps to help the user find beaches in Syros island. Flickr.com provides photos of the beaches where available.
 
+# Live Version
+
+https://stamatisdeli.github.io/Neighborhood-map/
+
+
 # How to use
 
 - Click on a beach marker that opens an infowindow that displays the name of the beach.
@@ -10,7 +15,7 @@ This an app that uses Google Maps to help the user find beaches in Syros island.
 - You can type in the input field and filter the beaches alphabetically (Try not to laugh with the weird Greek names).
 - If you are on a mobile or tablet screen, the list is automatically hidden, and you can open it by clicking on the SHOW button (and close it from the same button).
 
-# How to run the app
+# How to run the app in developer mode:
 
     1. Download this repo
     2. Run: npm install in working directory

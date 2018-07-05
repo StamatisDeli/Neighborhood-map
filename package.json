@@ -2,7 +2,7 @@
   "name": "neighborhood-map",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://StamatisDeli.github.io/Neighborhood-map",
+  "homepage": "https://StamatisDeli.github.io/Neighborhood-map",
   "dependencies": {
     "escape-string-regexp": "^1.0.5",
     "react": "^16.4.0",
