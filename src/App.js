@@ -115,7 +115,9 @@ class App extends React.Component {
         if (infowindow) infowindow.close();
         infowindow = new window.google.maps.InfoWindow({ content: content });
         infowindow.open(map, marker);
-        self.openModal()
+        window.google.maps.event.addListener(infowindow, 'domready', function () {
+          self.openModal()
+        });
         self.setState({ modalTitle: title })
         self.setState({ infowindow: infowindow })
       };
@@ -145,7 +147,7 @@ class App extends React.Component {
   }
 
   openModal(infowindow) {
-    if (infowindow) infowindow.close();
+    //if (infowindow) infowindow.close();
     let self = this
     let info = document.getElementById("info")
     window.google.maps.event.addDomListener(info, 'click', function () {
