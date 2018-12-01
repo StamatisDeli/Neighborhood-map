@@ -5,6 +5,7 @@
   "homepage": "https://StamatisDeli.github.io/Neighborhood-map",
   "dependencies": {
     "escape-string-regexp": "^1.0.5",
+    "merge": "^1.2.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-scripts": "1.1.4"
