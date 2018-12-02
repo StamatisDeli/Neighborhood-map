@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import './App.css';
 import LocationList from './LocationList'
 import Modal from './Modal'
@@ -105,7 +105,6 @@ class App extends React.Component {
       let self = this
       // Create an onclick event to open an infowindow at each marker.
       marker.openInfoWindow = function () {
-
         let content =
           `<div id='info'>
         <div><strong><h1>${marker.title}</h1></strong></div>
